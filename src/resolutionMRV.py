@@ -27,7 +27,7 @@ def backtrackingMRV(grid):
             if isPossible(grid, r, c, val):
                 grid[r][c].value = val
                 
-                if backtracking(grid):
+                if backtrackingMRV(grid):
                     return True
                 grid[r][c].value = 0
         return False         
@@ -41,7 +41,9 @@ def NextEmptyMRV(grid):
             for col in range(9):
                 if  gridPoss[row, col] == min:
                     return row, col
-    return -1, -1
+    
+    return NextEmpty(grid) # Si il y a encore des cases vides mais sans solution
+    
 def gridNumPossibility(grid): #Retourne le nombre de possibilité (en valeur) pour chaque case
     gridNum = np.zeros((9,9))
     for row in range(9):
@@ -87,4 +89,5 @@ g = SudokuGrid.SudokuGrid()
 g.printGridTerminal()
 
 backtrackingMRV(g.grid)
+print(gridNumPossibility(g.grid))
 g.printGridTerminal()
