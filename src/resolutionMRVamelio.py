@@ -1,12 +1,12 @@
 import SudokuGrid
 import numpy as np
-
+import time
 #Fonction de backtracking idiot
 def backtracking(sudoku, nbIte = 1):
     #Cherche le prochain vide:
     r,c = NextEmpty(sudoku.grid)
     if r == -1: #Le sudoku est terminé
-        print(nbIte)
+        #print("Le nombre d'appel de la fonction backtracking est : {}".format(nbIte))
         return True
     else:
         for val in range(1,10):
@@ -21,7 +21,7 @@ def backtrackingMRV(sudoku, nbIte = 1):
     #Cherche le prochain vide:
     r,c = NextEmptyMRV(sudoku.grid)
     if r == -1: #Le sudoku est terminé
-        print(nbIte)
+        #print("Le nombre d'appel de la fonction backtrackingMRV est : {}".format(nbIte))
         return True
     else:
         for val in range(1,10):
@@ -58,10 +58,15 @@ def NextEmpty(grid):
                 return row, col
     return -1,-1 
 
-
-sudo1 = SudokuGrid.SudokuGrid(9)
-sudo2 = SudokuGrid.SudokuGrid(9)
+"""
+sudo1 = SudokuGrid.SudokuGrid(18)
+sudo2 = SudokuGrid.SudokuGrid(18)
 sudo1.printGridTerminal()
+sudo1t1 = time.time()
 backtracking(sudo1)
+print("Le temps mis par le backtracking est : {} s" .format(time.time()-sudo1t1))
+sudo2t1 = time.time()
 backtrackingMRV(sudo2)
+print("Le temps mis par le backtrackingMRV est : {} s" .format(time.time()-sudo2t1))
 sudo1.printGridTerminal()
+"""
