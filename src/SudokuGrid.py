@@ -4,9 +4,9 @@ import os
 import Square
 
 class SudokuGrid:
-    def __init__(self):
+    def __init__(self, numeroSudoku = -1):
         self.grid = [] # matrice d'entier
-        self.loadGrid()
+        self.loadGrid(numeroSudoku)
         #self.loadEasyGrid()
 
     def defineValue(self, line, column, value):
@@ -88,8 +88,11 @@ class SudokuGrid:
             else:
                 print("║---+---+---║---+---+---║---+---+---║")
     
-    def loadGrid(self):
-        lineNumber = (randrange(50) * 10) + 1
+    def loadGrid(self, lineNumber):
+        if lineNumber == -1:
+            lineNumber = (randrange(50) * 10) + 1
+        else :
+            lineNumber = (lineNumber* 10) + 1
         f = open("src\grid.txt", "r")
         for i, line in enumerate(f):
             if ((i >= lineNumber) & (i< lineNumber+9)):

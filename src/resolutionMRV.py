@@ -2,34 +2,37 @@ import SudokuGrid
 import numpy as np
 
 #Fonction de backtracking idiot
-def backtracking(grid):
+def backtracking(grid, nbIte = 1):
     #Cherche le prochain vide:
     r,c = NextEmpty(grid)
     if r == -1: #Le sudoku est terminé
+        print(nbIte)
         return True
     else:
         for val in range(1,10):
             if isPossible(grid, r, c, val):
                 grid[r][c].value = val
                 
-                if backtracking(grid):
+                if backtracking(grid, nbIte + 1):
                     return True
                 grid[r][c].value = 0
         return False         
 
-def backtrackingMRV(grid):
+def backtrackingMRV(grid, nbIte = 1):
     #Cherche le prochain vide:
     r,c = NextEmptyMRV(grid)
     if r == -1: #Le sudoku est terminé
+        print(nbIte)
         return True
     else:
         for val in range(1,10):
             if isPossible(grid, r, c, val):
                 grid[r][c].value = val
                 
-                if backtrackingMRV(grid):
+                if backtrackingMRV(grid, nbIte + 1):
                     return True
                 grid[r][c].value = 0
+        
         return False         
 
 
@@ -85,9 +88,9 @@ def isPossible(grid, row, col, val):
 
 
 
-g = SudokuGrid.SudokuGrid()
-g.printGridTerminal()
-
-backtrackingMRV(g.grid)
-print(gridNumPossibility(g.grid))
-g.printGridTerminal()
+sudo1 = SudokuGrid.SudokuGrid(9)
+sudo2 = SudokuGrid.SudokuGrid(9)
+sudo1.printGridTerminal()
+backtracking(sudo1.grid)
+backtrackingMRV(sudo2.grid)
+sudo1.printGridTerminal()
