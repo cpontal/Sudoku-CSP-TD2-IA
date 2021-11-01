@@ -7,21 +7,29 @@ class SudokuGrid:
     def __init__(self):
         self.grid = [] # matrice d'entier
         self.loadGrid()
-        # self.loadEasyGrid()
+        #self.loadEasyGrid()
 
     def defineValue(self, line, column, value):
-        if self.grid[line][column].value == 0:
-            if self.grid[line][column].binCondition[value-1] == True:
-                self.grid[line][column].value = value
-                for i in self.grid[line][column].binCondition:
-                    self.grid[line][column].binCondition[i] = False
-                self.updateConstraint(line, column)
+        if value != 0:
+            if self.grid[line][column].value == 0:
+                if self.grid[line][column].binCondition[value-1] == True:
+                    self.grid[line][column].value = value
+                    for i in self.grid[line][column].binCondition:
+                        self.grid[line][column].binCondition[i] = False
+                    self.updateConstraint(line, column)
+                else:
+                    print("Erreur method defineValue : la valeur de respecte pas la contrainte")
+                    return 1
             else:
-                print("Erreur method defineValue : la valeur de respecte pas la contrainte")
+                print("Erreur method defineValue : la case a déjà une valeur")
                 return 1
         else:
-            print("Erreur method defineValue : la case a déjà une valeur")
-            return 1
+            self.grid[line][column].value = value
+            for i in self.grid:
+                for elem in i:
+                    if elem.value==0:
+                        elem.binCondition = [True,True,True,True,True,True,True,True,True]
+            self.initCheckAllConstraint()
 
     def initCheckAllConstraint(self):
         for i in range(9):
