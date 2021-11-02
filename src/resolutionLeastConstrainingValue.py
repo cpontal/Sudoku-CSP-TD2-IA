@@ -3,14 +3,11 @@ import numpy as np
 
 
 def backtrackingLCV(sudoku):
-    #Cherche le prochain vide:
+    # Cherche le prochain vide:
     r,c = NextEmpty(sudoku.grid)
-    if r == -1: #Le sudoku est terminé
+    if r == -1: # Le sudoku est terminé
         return True
     else:
-        total_poss = 0
-        highest_total_poss = 0
-        val_with_highest = -1
 
         # Pour chacune des valeurs possibles, soit de 1 a 9:
         li = []
@@ -18,20 +15,19 @@ def backtrackingLCV(sudoku):
             # ...Si la valeur 'val' est possible pour la case a la position
             # (r, c):
             if sudoku.grid[r][c].binCondition[val-1]:
-                # ...Donner cette valeur a une grille copie
+                # ...Donner cette valeur a la grille
                 sudoku.defineValue(r, c, val)
                
                 # Faire le total des possibilites pour les autres cases si la
                 # valeur de la case actuelle est 'val':
                 total_poss = grid_poss_sum_value(sudoku.grid)
                 li.append([total_poss,val])
-                # Garder le plus grand total de possibilites et la valeur de
-                # cette case dans ce cas:
+
                 sudoku.defineValue(r,c, 0)
         # Quand on a passe au travers des valeurs possibles pour la case
         # actuelle, soit de 1 a 9, on donne la valeur pour laquelle il y a le
         # plus de possibilites pour les autres cases (la ou la somme est la
-        # plus grande).
+        # plus grande). Mettre en ordre du plus grand nombre de possibilites.
         li.sort()
         for i in range(len(li)):
             sudoku.defineValue(r, c, li[len(li)-i-1][1])
@@ -40,8 +36,44 @@ def backtrackingLCV(sudoku):
                 return True
 
         # Si non on remet la valeur a 0 (plutot qu'a la valeur 'val' trouve
-        # precedemment) et on quitte la fonction, on refait la boucle
-        # principale de l'algorithme.
+        # precedemment).
+            sudoku.defineValue(r,c,0)
+        return False
+
+
+def backtrackingDegreeHeuristic(sudoku):
+    # Cherche le prochain vide:
+    r,c = NextEmpty(sudoku.grid)
+    if r == -1: # Le sudoku est terminé
+        return True
+    else:
+        # Pour chacune des valeurs possibles, soit de 1 a 9:
+        li = []
+        for val in range(1,10):
+            # ...Si la valeur 'val' est possible pour la case a la position
+            # (r, c):
+            if sudoku.grid[r][c].binCondition[val-1]:
+                # ...Donner cette valeur a la grille
+                sudoku.defineValue(r, c, val)
+               
+                # Faire le total des possibilites pour les autres cases si la
+                # valeur de la case actuelle est 'val':
+                total_poss = grid_poss_sum_value(sudoku.grid)
+                li.append([total_poss,val])
+
+                sudoku.defineValue(r,c, 0)
+        # Quand on a passe au travers des valeurs possibles pour la case
+        # actuelle, soit de 1 a 9, on donne la valeur pour laquelle il y a le
+        # moins de possibilites pour les autres cases (la ou la somme est la
+        # plus petite). Mettre en ordre du plus petit nombre de possibilites.
+        li.sort()
+        for i in range(len(li)):
+            sudoku.defineValue(r, c, li[i][1])
+            # Si le backtracking est fini, on a fini
+            if backtrackingLCV(sudoku):
+                return True
+            # Si non on remet la valeur a 0 (plutot qu'a la valeur 'val' trouve
+            # precedemment).
             sudoku.defineValue(r,c,0)
         return False
 
@@ -56,14 +88,8 @@ def NextEmptyLCV(grid):
                     return row, col
     return NextEmpty(grid) # Si il y a encore des cases vides mais sans solution
 
+
 def grid_poss_sum_value(grid):
-    """
-    total_possibilites = 0
-    gridPoss = gridNumPossibility(grid)
-    for row in range(9):
-        for col in range(9):
-            total_possibilites += gridPoss[row, col]
-    """
     return np.sum(gridNumPossibility(grid))
 
 
@@ -84,28 +110,14 @@ def NextEmpty(grid):
     return -1,-1
 
 
-
-def least_constraining_value(grid):
-    iteration = 10000
-    for x in range(iteration):
-        # La fonction 'backtrackingLCV' va back track tant que le tableau n'est
-        # pas rempli au complet. Remplis au complet veut dire rempli avec des
-        # valeurs de 1 a 9, ou -1 quand je passe par la case mais qu'il n'y a
-        # aucune valeur possible (que la fonction 'isPossible' retourne faux).
-        backtrackingLCV(grid)
-
-        # Une fois que le tableau est rempli de valeurs de 1 a 9 ou de -1
-        # (quand la fonction 'isPossible' retourne faux), on repasse a travers
-        # le tableau et on remet tous les -1 a 0 puis on refait une tournee. Le
-        # nombre de tournees qu'on fait est le nombre d'iterations ici dans
-        # cette fonction.
-        for row in range(9):
-            for col in range(9):
-                if grid[row][col].value == -1:
-                    grid[row][col].value = 0
-
-
+# Resolution with the Least constraining value algorithm
 g = SudokuGrid.SudokuGrid()
 g.printGridTerminal()
 backtrackingLCV(g)
+g.printGridTerminal()
+
+# Resolution with the Degree heuristic algorithm
+g = SudokuGrid.SudokuGrid()
+g.printGridTerminal()
+backtrackingDegreeHeuristic(g)
 g.printGridTerminal()
