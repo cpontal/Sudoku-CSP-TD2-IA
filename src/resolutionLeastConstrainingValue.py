@@ -2,9 +2,9 @@ import SudokuGrid
 import numpy as np
 
 
-def backtrackingLCV(grid):
+def backtrackingLCV(sudoku):
     #Cherche le prochain vide:
-    r,c = NextEmpty(grid)
+    r,c = NextEmpty(sudoku.grid)
     if r == -1: #Le sudoku est terminé
         return True
     else:
@@ -17,37 +17,32 @@ def backtrackingLCV(grid):
         for val in range(1,10):
             # ...Si la valeur 'val' est possible pour la case a la position
             # (r, c):
-            if isPossible(grid, r, c, val):
+            if sudoku.grid[r][c].binCondition[val-1]:
                 # ...Donner cette valeur a une grille copie
-                grid[r][c].value = val
-
+                sudoku.defineValue(r, c, val)
+               
                 # Faire le total des possibilites pour les autres cases si la
                 # valeur de la case actuelle est 'val':
-                total_poss = grid_poss_sum_value(grid)
+                total_poss = grid_poss_sum_value(sudoku.grid)
                 li.append([total_poss,val])
                 # Garder le plus grand total de possibilites et la valeur de
                 # cette case dans ce cas:
-                """
-               
-                if total_poss >= highest_total_poss:
-                    highest_total_poss = total_poss
-                    val_with_highest = val
-                """
+                sudoku.defineValue(r,c, 0)
         # Quand on a passe au travers des valeurs possibles pour la case
         # actuelle, soit de 1 a 9, on donne la valeur pour laquelle il y a le
         # plus de possibilites pour les autres cases (la ou la somme est la
         # plus grande).
         li.sort()
         for i in range(len(li)):
-            grid[r][c].value = li[len(li)-i-1][1]
+            sudoku.defineValue(r, c, li[len(li)-i-1][1])
         # Si le backtracking est fini, on a fini
-            if backtrackingLCV(grid):
+            if backtrackingLCV(sudoku):
                 return True
 
         # Si non on remet la valeur a 0 (plutot qu'a la valeur 'val' trouve
         # precedemment) et on quitte la fonction, on refait la boucle
         # principale de l'algorithme.
-            grid[r][c].value = 0
+            sudoku.defineValue(r,c,0)
         return False
 
 
@@ -60,16 +55,6 @@ def NextEmptyLCV(grid):
                 if  gridPoss[row, col] != 0:
                     return row, col
     return NextEmpty(grid) # Si il y a encore des cases vides mais sans solution
-
-
-def grid_poss_highest_value(grid):  # Not used
-    gridPoss = gridNumPossibility(grid)
-    if gridPoss.any() != np.zeros((9,9)).any():
-        max_poss_x, max_poss_y = np.unravel_index(gridPoss.argmax(), gridPoss.shape)
-        max_possibilite = gridPoss[max_poss_x, max_poss_y]
-        return max_poss_x, max_poss_y, max_possibilite
-    return -1, -1, -1
-
 
 def grid_poss_sum_value(grid):
     """
@@ -87,9 +72,7 @@ def gridNumPossibility(grid): #Retourne le nombre de possibilité (en valeur) po
     for row in range(9):
         for col in range(9):
             if grid[row][col].value == 0:
-                for val in range(1,10):
-                    if isPossible(grid, row, col, val):
-                        gridNum[row][col] += 1
+                gridNum[row,col] = sum(grid[row][col].binCondition)
     return gridNum
 
 
@@ -100,29 +83,6 @@ def NextEmpty(grid):
                 return row, col
     return -1,-1
 
-
-def isPossible(grid, row, col, val):
-    
-    # Meme num sur la ligne
-    for x in range(9):
-        if grid[row][x].value == val:
-            return False
-
-    # Meme num sur la colonne
-    for x in range(9):
-        if grid[x][col].value == val:
-            return False
-    
-    # Meme num sur la sous matrice
-    subRow = row - row % 3
-    subCol = col - col % 3
-    for i in range(3):
-        for j in range(3):
-            if grid[i + subRow][j + subCol].value == val:
-                return False
-
-    # Le chiffre est possible
-    return True
 
 
 def least_constraining_value(grid):
@@ -147,8 +107,5 @@ def least_constraining_value(grid):
 
 g = SudokuGrid.SudokuGrid()
 g.printGridTerminal()
-
-least_constraining_value(g.grid)
-
-print(gridNumPossibility(g.grid))
+backtrackingLCV(g)
 g.printGridTerminal()
