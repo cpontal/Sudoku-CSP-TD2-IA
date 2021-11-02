@@ -127,7 +127,6 @@ def least_constraining_value(grid):
         # aucune valeur possible (que la fonction 'isPossible' retourne faux).
         backtrackingLCV(grid)
 
-
         # Une fois que le tableau est rempli de valeurs de 1 a 9 ou de -1
         # (quand la fonction 'isPossible' retourne faux), on repasse a travers
         # le tableau et on remet tous les -1 a 0 puis on refait une tournee. Le
