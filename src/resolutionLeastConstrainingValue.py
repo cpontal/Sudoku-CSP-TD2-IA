@@ -29,7 +29,6 @@ def backtrackingLCV(grid):
                 if total_poss >= highest_total_poss:
                     highest_total_poss = total_poss
                     val_with_highest = val
-
         # Quand on a passe au travers des valeurs possibles pour la case
         # actuelle, soit de 1 a 9, on donne la valeur pour laquelle il y a le
         # plus de possibilites pour les autres cases (la ou la somme est la
@@ -41,9 +40,10 @@ def backtrackingLCV(grid):
             return True
 
         # Si non on remet la valeur a 0 (plutot qu'a la valeur 'val' trouve
-        # precedemment) et on retourne, on refait la boucle.
+        # precedemment) et on quitte la fonction, on refait la boucle
+        # principale de l'algorithme.
         grid[r][c].value = 0
-        return False   
+        return False
 
 
 def NextEmptyLCV(grid):
@@ -127,6 +127,7 @@ def least_constraining_value(grid):
         # aucune valeur possible (que la fonction 'isPossible' retourne faux).
         backtrackingLCV(grid)
 
+
         # Une fois que le tableau est rempli de valeurs de 1 a 9 ou de -1
         # (quand la fonction 'isPossible' retourne faux), on repasse a travers
         # le tableau et on remet tous les -1 a 0 puis on refait une tournee. Le
@@ -136,6 +137,7 @@ def least_constraining_value(grid):
             for col in range(9):
                 if grid[row][col].value == -1:
                     grid[row][col].value = 0
+
 
 g = SudokuGrid.SudokuGrid()
 g.printGridTerminal()
