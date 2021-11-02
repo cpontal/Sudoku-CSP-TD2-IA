@@ -4,7 +4,7 @@ import numpy as np
 
 def backtrackingLCV(grid):
     #Cherche le prochain vide:
-    r,c = NextEmptyLCV(grid)
+    r,c = NextEmpty(grid)
     if r == -1: #Le sudoku est terminé
         return True
     else:
@@ -13,6 +13,7 @@ def backtrackingLCV(grid):
         val_with_highest = -1
 
         # Pour chacune des valeurs possibles, soit de 1 a 9:
+        li = []
         for val in range(1,10):
             # ...Si la valeur 'val' est possible pour la case a la position
             # (r, c):
@@ -23,26 +24,30 @@ def backtrackingLCV(grid):
                 # Faire le total des possibilites pour les autres cases si la
                 # valeur de la case actuelle est 'val':
                 total_poss = grid_poss_sum_value(grid)
-
+                li.append([total_poss,val])
                 # Garder le plus grand total de possibilites et la valeur de
                 # cette case dans ce cas:
+                """
+               
                 if total_poss >= highest_total_poss:
                     highest_total_poss = total_poss
                     val_with_highest = val
+                """
         # Quand on a passe au travers des valeurs possibles pour la case
         # actuelle, soit de 1 a 9, on donne la valeur pour laquelle il y a le
         # plus de possibilites pour les autres cases (la ou la somme est la
         # plus grande).
-        grid[r][c].value = val_with_highest
-
+        li.sort()
+        for i in range(len(li)):
+            grid[r][c].value = li[len(li)-i-1][1]
         # Si le backtracking est fini, on a fini
-        if backtrackingLCV(grid):
-            return True
+            if backtrackingLCV(grid):
+                return True
 
         # Si non on remet la valeur a 0 (plutot qu'a la valeur 'val' trouve
         # precedemment) et on quitte la fonction, on refait la boucle
         # principale de l'algorithme.
-        grid[r][c].value = 0
+            grid[r][c].value = 0
         return False
 
 
@@ -67,12 +72,14 @@ def grid_poss_highest_value(grid):  # Not used
 
 
 def grid_poss_sum_value(grid):
+    """
     total_possibilites = 0
     gridPoss = gridNumPossibility(grid)
     for row in range(9):
         for col in range(9):
             total_possibilites += gridPoss[row, col]
-    return total_possibilites
+    """
+    return np.sum(gridNumPossibility(grid))
 
 
 def gridNumPossibility(grid): #Retourne le nombre de possibilité (en valeur) pour chaque case
