@@ -2,7 +2,7 @@
 
 # Modules
 
-Listes des modules python utilisés dans notre projet ainsi que comment els installer.
+Listes des modules python utilisés dans notre projet ainsi que comment les installer.
 
 ## Numpy
 
@@ -17,7 +17,7 @@ pip install numpy
 
 ## Time
 
-Time est un module permettant d'obtenir des fonctions basé sur le temps. Il peut s'agir d'effectuer des relevés de temps dans un programme ou encre de manipuler l'execution d'un programme en rajoutant des pauses dans l'exécution.
+Time est un module permettant d'obtenir des fonctions basées sur le temps. Il peut s'agir d'effectuer des relevés de temps dans un programme ou encore de manipuler l'execution d'un programme en rajoutant des pauses dans l'exécution.
 
 ### Installation
 Utiliser le "package manager" [pip](https://pip.pypa.io/en/stable/) pour installer time.
@@ -39,10 +39,10 @@ pip install random
 #
 # Execution du code
 
-Notre code comprend plusieurs fichier mais seul le fichier <b>main.py</b> permet d'executer les tests que nous avons réaliser durant ce TP. Il comprend un exemple de résolution d'une grille aléatoire sur une base de 50 sudokus par l'ensemble des algorithmes réalisés durant ce TP. La deuxième partie comprend un test de performance visant à calculer sur les 50 sudokus la moyenne des temps de résolutions de chaque algorithmes afin d'en tirer des conclusions.
+Notre code comprend plusieurs fichiers mais seul le fichier <b>main.py</b> permet d'executer les tests que nous avons réalisés durant ce TP. Il comprend un exemple de résolution d'une grille aléatoire sur une base de 50 sudokus par l'ensemble des algorithmes réalisés durant ce TP. La deuxième partie comprend un test de performance visant à calculer sur les 50 sudokus la moyenne des temps de résolution de chaque algorithme afin d'en tirer des conclusions.
 #
 # Indications
-Certains fichier contiennent plusieurs des algorithmes que nous avons réalisés. Ici est énuméré les différents algorithmes ainsi que le fichier correspondant à sa localisation.  
+Certains fichiers contiennent plusieurs des algorithmes que nous avons réalisés. Ici est énuméré les différents algorithmes ainsi que le fichier correspondant à sa localisation.  
 
 ## Les algorithmes :
 <ul>
