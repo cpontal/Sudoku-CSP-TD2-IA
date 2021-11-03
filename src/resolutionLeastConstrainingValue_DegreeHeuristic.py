@@ -109,7 +109,7 @@ def NextEmpty(grid):
                 return row, col
     return -1,-1
 
-
+"""
 # Resolution with the Least constraining value algorithm
 g = SudokuGrid.SudokuGrid()
 g.printGridTerminal()
@@ -121,3 +121,4 @@ g = SudokuGrid.SudokuGrid()
 g.printGridTerminal()
 backtrackingDegreeHeuristic(g)
 g.printGridTerminal()
+"""

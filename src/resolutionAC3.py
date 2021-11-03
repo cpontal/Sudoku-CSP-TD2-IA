@@ -59,9 +59,10 @@ def checkConsistensy(g, row, col, val):
 
     return True
 
-
+"""
 g = SudokuGrid.SudokuGrid()
 g.printGridTerminal()
 
 print(backtrackingAC3(g))
 g.printGridTerminal()
+"""
