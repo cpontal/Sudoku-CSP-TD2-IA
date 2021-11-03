@@ -1,6 +1,7 @@
 import SudokuGrid
 import numpy as np
 import time
+
 #Fonction de backtracking idiot
 def backtracking(sudoku, nbIte = 1):
     #Cherche le prochain vide:
