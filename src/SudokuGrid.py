@@ -3,22 +3,24 @@ from random import randrange
 import os
 import Square
 
+
 class SudokuGrid:
-    def __init__(self, numeroSudoku = -1):
-        self.grid = [] # matrice d'entier
+    def __init__(self, numeroSudoku=-1):
+        self.grid = []  # matrice d'entier
         self.loadGrid(numeroSudoku)
-        #self.loadEasyGrid()
+        # self.loadEasyGrid()
 
     def defineValue(self, line, column, value):
         if value != 0:
             if self.grid[line][column].value == 0:
-                if self.grid[line][column].binCondition[value-1] == True:
+                if self.grid[line][column].binCondition[value-1] is True:
                     self.grid[line][column].value = value
                     for i in self.grid[line][column].binCondition:
                         self.grid[line][column].binCondition[i] = False
                     self.updateConstraint(line, column)
                 else:
-                    print("Erreur method defineValue : la valeur de respecte pas la contrainte")
+                    print("Erreur method defineValue : la valeur de respecte \
+                        ""pas la contrainte")
                     return 1
             else:
                 print("Erreur method defineValue : la case a déjà une valeur")
@@ -27,19 +29,21 @@ class SudokuGrid:
             self.grid[line][column].value = value
             for i in self.grid:
                 for elem in i:
-                    if elem.value==0:
-                        elem.binCondition = [True,True,True,True,True,True,True,True,True]
+                    if elem.value == 0:
+                        elem.binCondition = [
+                            True, True, True, True, True, True, True, True,
+                            True]
             self.initCheckAllConstraint()
 
     def initCheckAllConstraint(self):
         for i in range(9):
             self.checkConstraintLine(i)
             self.checkConstraintcollumn(i)
-        
+
         for i in range(3):
             for j in range(3):
                 self.checkConstraintBloc(i*3, j*3)
-    
+
     def updateConstraint(self, line, column):
         self.checkConstraintBloc(line, column)
         self.checkConstraintLine(line)
@@ -52,7 +56,7 @@ class SudokuGrid:
                     if tab[n].value == 0:
                         tab[n].binCondition[elem[n].value-1] = False
         return
-    
+
     def checkConstraintLine(self, n):
         for elem in self.grid[n]:
             if elem.value > 0:
@@ -60,14 +64,16 @@ class SudokuGrid:
                     if tab.value == 0:
                         tab.binCondition[elem.value-1] = False
         return
-    
+
     def checkConstraintBloc(self, lineNumber, columnNumber):
         square = 3
         groupNumberLine = lineNumber//square
         groupNumberColumn = columnNumber//square
         tabGroup = []
-        for i in range(square*groupNumberLine, square + square*groupNumberLine):
-            for j in range(square*groupNumberColumn, square + square*groupNumberColumn):
+        for i in range(square * groupNumberLine,
+                       square + square*groupNumberLine):
+            for j in range(square*groupNumberColumn,
+                           square + square * groupNumberColumn):
                 tabGroup.append(self.grid[i][j])
 
         for i in range(square*square):
@@ -80,24 +86,26 @@ class SudokuGrid:
     def printGridTerminal(self):
         print("╔═══════════╦═══════════╦═══════════╗")
         for i, row in enumerate(self.grid):
-            print(("║" + " {} ¦ {} ¦ {} ║"*3).format(*[x.value if x.value != 0 else " " for x in row]))
+            print(("║" + " {} ¦ {} ¦ {} ║"*3).format(
+                *[x.value if x.value != 0 else " " for x in row]))
             if i == 8:
                 print("╚═══════════╩═══════════╩═══════════╝")
             elif i % 3 == 2:
                 print("╠═══════════╬═══════════╬═══════════╣")
             else:
                 print("║---+---+---║---+---+---║---+---+---║")
-    
+
     def loadGrid(self, lineNumber):
         if lineNumber == -1:
             lineNumber = (randrange(50) * 10) + 1
-        else :
-            lineNumber = (lineNumber* 10) + 1
+        else:
+            lineNumber = (lineNumber * 10) + 1
         f = open("src\grid.txt", "r")
         for i, line in enumerate(f):
-            if ((i >= lineNumber) & (i< lineNumber+9)):
+            if ((i >= lineNumber) & (i < lineNumber+9)):
 
-                self.grid.append(list(map(Square.Square, map(int, line.rstrip('\n')))))
+                self.grid.append(list(map(Square.Square,
+                                          map(int, line.rstrip('\n')))))
             elif i > lineNumber+9:
                 break
         f.close()
@@ -127,7 +135,6 @@ class SudokuGrid:
 # g = SudokuGrid()
 # g.loadGrid()
 # g.printGridTerminal()
-
 
 # print(g.grid[8][8].value)
 # print(g.grid[8][8].binCondition)
