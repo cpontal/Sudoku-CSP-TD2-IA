@@ -3,7 +3,7 @@ import numpy as np
 import time
 
 
-# Fonction de backtracking idiot
+# Fonction de backtracking
 def backtracking(sudoku, nbIte=1):
     # Cherche le prochain vide:
     r, c = NextEmpty(sudoku.grid)
